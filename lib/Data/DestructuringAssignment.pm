@@ -7,7 +7,7 @@ use base qw/Tie::Scalar/;
 
 our $VERSION = '0.01';
 
-our @EXOPORT_OK = qw/destruct/;
+our @EXPORT_OK = qw/destruct/;
 
 sub destruct : lvalue {
     my ($data) = @_;
@@ -22,12 +22,13 @@ sub TIESCALAR {
 
 sub FETCH {
     my ( $self ) = @_;
-    die('Disallow Fetch');
+    $self->{is_assigned};
+    #die('Disallow Fetch');
 }
 
 sub STORE {
     my ( $self,$value ) = @_;
-    $self->assign($value);
+    $self->{is_assigned} = $self->assign($value);
 }
 sub new {
     my ( $class,$data ) = @_;
@@ -62,24 +63,31 @@ sub __assign {
 
 sub __assign_scalar {
     my ( $ref,$data ) = @_;
+    return if defined $$ref;
+    return unless defined $data;
     $$ref = $data;
+    return 1;
 }
 sub __assign_hash {
     my ( $data,$target ) = @_;
+    my $flag = 0;
     for my $key ( keys %$data ) {
         next unless exists $target->{$key};
         my $element = $data->{$key};
-        __assign( $element,$target->{$key});
+        $flag |= __assign( $element,$target->{$key});
     }
+    return $flag;
 }
 
 sub __assign_array{
     my ( $data,$target ) = @_;
+    my $flag = 0;
     for my $index (0..(scalar @$data) -1) {
         next unless exists $target->[$index];
         my $element = $data->[$index];
-        __assign( $element,$target->[$index]);
+        $flag |= __assign( $element,$target->[$index]);
     }
+    return $flag;
 }
 
 1;
