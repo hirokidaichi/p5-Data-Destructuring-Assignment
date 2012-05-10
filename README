@@ -1,27 +1,23 @@
-This is Perl module Data::DestructuringAssignment.
+NAME
+    Data::DestructuringAssignment - harmony's destructuring assignment for
+    perl5
 
-INSTALLATION
+SYNOPSIS
+        use Data::DestructuringAssignment qw/destruct/;
+    
+        destruct([\my $hoge,\my $fuga]) = [10,20];
+        print "hoge is $hoge";# hoge is 10
+        print "fuga is $fuga";# fuga is 20
 
-Data::DestructuringAssignment installation is straightforward. If your CPAN shell is set up,
-you should just be able to do
+DESCRIPTION
+    Data::DestructuringAssignment provides perl harmony's destructuring
+    assignment
 
-    % cpan Data::DestructuringAssignment
+AUTHOR
+    Daichi Hiroki<hirokidaichi {at} gmail.com>
 
-Download it, unpack it, then build it as per the usual:
+SEE ALSO
+LICENSE
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
 
-    % perl Makefile.PL
-    % make && make test
-
-Then install it:
-
-    % make install
-
-DOCUMENTATION
-
-Data::DestructuringAssignment documentation is available as in POD. So you can do:
-
-    % perldoc Data::DestructuringAssignment
-
-to read the documentation online with your favorite pager.
-
-Default Name
