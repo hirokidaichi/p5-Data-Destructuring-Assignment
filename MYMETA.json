@@ -4,7 +4,7 @@
       "Daichi Hiroki<hirokidaichi {at} gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "ExtUtils::MakeMaker version 6.62, CPAN::Meta::Converter version 2.112150",
+   "generated_by" : "Module::Install version 1.04, CPAN::Meta::Converter version 2.112150",
    "license" : [
       "perl_5"
    ],
@@ -15,8 +15,9 @@
    "name" : "Data-DestructuringAssignment",
    "no_index" : {
       "directory" : [
+         "inc",
          "t",
-         "inc"
+         "xt"
       ]
    },
    "prereqs" : {
@@ -27,7 +28,7 @@
       },
       "configure" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : 0
+            "ExtUtils::MakeMaker" : "6.36"
          }
       },
       "runtime" : {
@@ -35,5 +36,14 @@
       }
    },
    "release_status" : "stable",
+   "resources" : {
+      "homepage" : "https://github.com/hirokidaichi/p5-Data-Destructuring-Assignment/tree",
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "url" : "git://github.com/hirokidaichi/p5-Data-Destructuring-Assignment.git"
+      }
+   },
    "version" : "0.01"
 }
