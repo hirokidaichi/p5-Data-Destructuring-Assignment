@@ -9,14 +9,39 @@ SYNOPSIS
         print "hoge is $hoge";# hoge is 10
         print "fuga is $fuga";# fuga is 20
 
+        destruct( \my $hoge ) = 10;
+
+        destruct( [\my $a ,\my $b] ) = [1,2];
+
+        destruct( { hash => \my $hash } ) = { hash => [1,2,3]};
+
+        my @array =  map{ +{ hoge => "$_",fuga => $_ * 2}} (1..10);
+        while(destruct({ hoge => \my $hoge } ) = shift @array) {
+            # $hoge..;
+        }
+    
+        my @array =  map{ +{ hoge => "$_",fuga => $_ * 2}} (1..10);
+        for my $elem (@array){
+            destruct({ hoge => \my $hoge, fuga => \my $fuga}) = $elem;
+        }
+    
+        my $template = { hoge => 1,fuga => 2};
+        if( destruct({ hoge => \my $hoge ,piyo => \my $fuga }) = $template ){
+            ::pass 'matched any';
+        }else {
+            # not come here
+        }
+
 DESCRIPTION
-    Data::DestructuringAssignment provides perl harmony's destructuring
-    assignment
+    Data::DestructuringAssignment provides harmony's destructuring
+    assignment for perl5
 
 AUTHOR
     Daichi Hiroki<hirokidaichi {at} gmail.com>
 
 SEE ALSO
+    <http://wiki.ecmascript.org/doku.php?id=harmony:destructuring>
+
 LICENSE
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
