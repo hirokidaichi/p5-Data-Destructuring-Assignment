@@ -23,7 +23,6 @@ sub TIESCALAR {
 sub FETCH {
     my ( $self ) = @_;
     $self->{is_assigned};
-    #die('Disallow Fetch');
 }
 
 sub STORE {
@@ -63,7 +62,6 @@ sub __assign {
 
 sub __assign_scalar {
     my ( $ref,$data ) = @_;
-    return if defined $$ref;
     return unless defined $data;
     $$ref = $data;
     return 1;
@@ -107,9 +105,32 @@ Data::DestructuringAssignment - harmony's destructuring assignment for perl5
     print "hoge is $hoge";# hoge is 10
     print "fuga is $fuga";# fuga is 20
 
+    destruct( \my $hoge ) = 10;
+
+    destruct( [\my $a ,\my $b] ) = [1,2];
+
+    destruct( { hash => \my $hash } ) = { hash => [1,2,3]};
+
+    my @array =  map{ +{ hoge => "$_",fuga => $_ * 2}} (1..10);
+    while(destruct({ hoge => \my $hoge } ) = shift @array) {
+        # $hoge..;
+    }
+    
+    my @array =  map{ +{ hoge => "$_",fuga => $_ * 2}} (1..10);
+    for my $elem (@array){
+        destruct({ hoge => \my $hoge, fuga => \my $fuga}) = $elem;
+    }
+    
+    my $template = { hoge => 1,fuga => 2};
+    if( destruct({ hoge => \my $hoge ,piyo => \my $fuga }) = $template ){
+        ::pass 'matched any';
+    }else {
+        # not come here
+    }
+
 =head1 DESCRIPTION
 
-Data::DestructuringAssignment provides perl harmony's destructuring assignment
+Data::DestructuringAssignment provides harmony's destructuring assignment for perl5
 
 =head1 AUTHOR
 
@@ -117,6 +138,7 @@ Daichi HirokiE<lt>hirokidaichi {at} gmail.comE<gt>
 
 =head1 SEE ALSO
 
+L<http://wiki.ecmascript.org/doku.php?id=harmony:destructuring>
 
 =head1 LICENSE
 

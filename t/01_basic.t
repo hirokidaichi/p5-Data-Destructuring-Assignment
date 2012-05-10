@@ -4,6 +4,7 @@ use Test::More;
 use Test::Exception;
 use Data::DestructuringAssignment qw/destruct/;
 
+
 {
     ::lives_ok { destruct()} 'just call';
     ::lives_ok { destruct() = undef} 'assign undef';
@@ -45,5 +46,51 @@ use Data::DestructuringAssignment qw/destruct/;
         ::is $hoge,$c++,"hoge is $hoge";
     }
     
+}
+
+{
+    my $template = { hoge => 1,fuga => 2};
+    if( destruct({ hoge => \my $hoge , fuga => \my $fuga }) = $template ){
+        ::pass 'matched';
+    }else {
+        ::fail 'matched';
+    }
+}
+{
+    my $template = { hoge => 1,fuga => 2};
+    if( destruct({ hoge => \my $hoge ,piyo => \my $fuga }) = $template ){
+        ::pass 'matched any';
+    }else {
+        ::fail 'matched any';
+    }
+}
+{
+    my $template = { hoge => 1,fuga => 2};
+    if( destruct({ moga => \my $hoge ,piyo => \my $fuga }) = $template ){
+        ::fail 'no matched ';
+    }else {
+        ::pass 'no matched';
+    }
+}
+{
+    my ($x,$y) = (10,20);
+    destruct([\$y,\$x] ) = [$x,$y];
+    ::is $x,20,'swap1';
+    ::is $y,10,'swap2';
+}
+
+{
+    package Person;
+    use Data::DestructuringAssignment qw/destruct/;
+    sub new {
+        destruct([\my $class,{ name => \my $name , age => \my $age}]) = \@_;
+        return bless { name => $name , age => $age } , $class;
+    }
+    sub age { shift->{age}}
+}
+
+{
+    my $p = Person->new({ name => 'daichi hiroki', age => 28});
+    is $p->age , 28;
 }
 ::done_testing;
